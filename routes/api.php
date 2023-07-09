@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// jwt用に追加
+use App\Http\Controllers\API\JWTAuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,4 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// jwt用に追加
+Route::post('register', [JWTAuthController::class, 'register']);
+Route::post('login', [JWTAuthController::class, 'login']);
+Route::group(['middleware' => 'auth.jwt'], function () {
+    Route::post('logout', [JWTAuthController::class, 'logout']);
 });
